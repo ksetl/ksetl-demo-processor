@@ -1,0 +1,17 @@
+targetSystemId: ETRM1
+mp:
+  messaging:
+    incoming:
+      legal-entity-in:
+        connector: smallrye-kafka
+        auto:
+          offset:
+            reset: "earliest"
+        topic: "legal-entity"
+    outgoing:
+      legal-entity-out:
+        connector: smallrye-kafka
+        topic: "legal-entity-etrm1"
+        key:
+          serializer: org.apache.kafka.common.serialization.IntegerSerializer
+
