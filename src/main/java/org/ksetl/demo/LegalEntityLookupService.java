@@ -6,8 +6,16 @@ import java.util.Optional;
 @ApplicationScoped
 public class LegalEntityLookupService {
 
+    private boolean allPass = false;
+
     public Optional<Integer> findLegalEntityId(String globalLegalEntityId, String targetSystemId) {
-        return Optional.of(globalLegalEntityId.length());
+        if (allPass || globalLegalEntityId.length() < 5) {
+            return Optional.of(globalLegalEntityId.length());
+        }
+        return Optional.empty();
     }
 
+    public void setAllPass(boolean allPass) {
+        this.allPass = allPass;
+    }
 }
