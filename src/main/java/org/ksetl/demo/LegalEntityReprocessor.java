@@ -2,6 +2,8 @@ package org.ksetl.demo;
 
 import io.smallrye.common.annotation.Identifier;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.ksetl.sdk.KafkaPicker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,15 +29,14 @@ public class LegalEntityReprocessor {
 
     public LegalEntityReprocessor(@Identifier("default-kafka-broker") Map<String, Object> configs, LegalEntityConsumer legalEntityConsumer) {
         this.configs = configs;
-        this.configs.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        this.configs.put("value.deserializer", "org.ksetl.demo.LegalEntitySourceDeserializer");
         this.legalEntityConsumer = legalEntityConsumer;
         this.kafkaPicker = new KafkaPicker(configs);
     }
 
     @POST
     public Response post(MessageProcessingErrorMetadata messageProcessingErrorMetadata) {
-        ConsumerRecord<String, LegalEntitySource> picked = kafkaPicker.pick(messageProcessingErrorMetadata.topic(), messageProcessingErrorMetadata.partition(), messageProcessingErrorMetadata.offset());
+        ConsumerRecord<String, LegalEntitySource> picked = kafkaPicker.pick(
+                messageProcessingErrorMetadata.topic(), messageProcessingErrorMetadata.partition(), messageProcessingErrorMetadata.offset(), new StringDeserializer(), new LegalEntitySourceDeserializer());
         legalEntityConsumer.process(picked);
         return Response.status(Response.Status.OK).build();
     }

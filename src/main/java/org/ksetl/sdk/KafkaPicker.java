@@ -3,7 +3,9 @@ package org.ksetl.sdk;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.serialization.Deserializer;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -18,8 +20,8 @@ public class KafkaPicker {
         this.configs = configs;
     }
 
-    public <K, V> ConsumerRecord<K, V> pick(String topic, int partition, long offset) {
-        KafkaConsumer<K, V> consumer = new KafkaConsumer(configs);
+    public <K, V> ConsumerRecord<K, V> pick(String topic, int partition, long offset, Deserializer<K> keyDeserializer, Deserializer<V> valueDeserializer) {
+        KafkaConsumer<K, V> consumer = new KafkaConsumer(configs, keyDeserializer, valueDeserializer);
         TopicPartition topicPartition = new TopicPartition(topic, partition);
         consumer.assign(Collections.singletonList(topicPartition));
         consumer.seek(topicPartition, offset);
