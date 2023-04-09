@@ -8,6 +8,17 @@ mp:
           offset:
             reset: "earliest"
         topic: "legal-entity"
+      legal-entity-reprocess:
+        connector: smallrye-kafka
+        topic: "legal-entity"
+        value:
+          deserializer: "org.ksetl.demo.LegalEntitySourceDeserializer"
+        max:
+          poll:
+            records: 1
+        auto:
+          offset:
+            reset: "earliest"
       message-processing-error-metadata-in:
         connector: smallrye-kafka
         topic: "message-processing-error-metadata"
