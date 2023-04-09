@@ -14,16 +14,16 @@ import javax.enterprise.context.ApplicationScoped;
 import java.util.Optional;
 
 @ApplicationScoped
-public class LegalEntityConsumer {
+public class LegalEntityProcessor {
 
-    public static final Logger logger = LoggerFactory.getLogger(LegalEntityConsumer.class);
+    public static final Logger logger = LoggerFactory.getLogger(LegalEntityProcessor.class);
 
     private final String targetSystemId;
     private final LegalEntityLookupService legalEntityLookupService;
     private final LegalEntityTransformationFailureHandler legalEntityTransformationFailureHandler;
     private final Emitter<LegalEntityTarget> emitter;
 
-    public LegalEntityConsumer(
+    public LegalEntityProcessor(
             @ConfigProperty(name = "targetSystemId") String targetSystemId,
             LegalEntityLookupService legalEntityLookupService,
             LegalEntityTransformationFailureHandler legalEntityTransformationFailureHandler,

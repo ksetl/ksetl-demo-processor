@@ -25,9 +25,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @QuarkusTest
 @QuarkusTestResource(KafkaCompanionResource.class)
-class LegalEntityConsumerTest {
+class LegalEntityProcessorTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(LegalEntityConsumerTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(LegalEntityProcessorTest.class);
 
     @InjectKafkaCompanion
     KafkaCompanion kafkaCompanion;

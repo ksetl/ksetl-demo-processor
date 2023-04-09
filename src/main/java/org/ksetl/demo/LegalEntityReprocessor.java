@@ -20,11 +20,11 @@ public class LegalEntityReprocessor {
 
     public static final Logger logger = LoggerFactory.getLogger(LegalEntityReprocessor.class);
 
-    private final LegalEntityConsumer legalEntityConsumer;
+    private final LegalEntityProcessor legalEntityProcessor;
     private final KafkaPicker kafkaPicker;
 
-    public LegalEntityReprocessor(LegalEntityConsumer legalEntityConsumer, KafkaPicker kafkaPicker) {
-        this.legalEntityConsumer = legalEntityConsumer;
+    public LegalEntityReprocessor(LegalEntityProcessor legalEntityProcessor, KafkaPicker kafkaPicker) {
+        this.legalEntityProcessor = legalEntityProcessor;
         this.kafkaPicker = kafkaPicker;
     }
 
@@ -32,7 +32,7 @@ public class LegalEntityReprocessor {
     public Response post(MessageProcessingErrorMetadata messageProcessingErrorMetadata) {
         Optional<ConsumerRecord<String, LegalEntitySource>> optional = this.kafkaPicker.find(Constants.CHANNEL_LEGAL_ENTITY_IN, messageProcessingErrorMetadata.topic(), messageProcessingErrorMetadata.partition(), messageProcessingErrorMetadata.offset());
         if (optional.isPresent()) {
-            legalEntityConsumer.process(optional.get());
+            legalEntityProcessor.process(optional.get());
             return Response.status(Response.Status.OK).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
