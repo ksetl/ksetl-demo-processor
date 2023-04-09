@@ -2,8 +2,6 @@ package org.ksetl.demo;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.ksetl.sdk.KafkaPicker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -17,8 +15,6 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class LegalEntityReprocessor {
-
-    public static final Logger logger = LoggerFactory.getLogger(LegalEntityReprocessor.class);
 
     private final LegalEntityProcessor legalEntityProcessor;
     private final KafkaPicker kafkaPicker;

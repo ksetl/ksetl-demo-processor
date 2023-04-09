@@ -1,4 +1,9 @@
 targetSystemId: ETRM1
+
+quarkus:
+  http:
+    port: 8081
+
 mp:
   messaging:
     incoming:

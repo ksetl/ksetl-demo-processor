@@ -1,5 +1,6 @@
 package org.ksetl.demo;
 
+import io.quarkus.logging.Log;
 import io.smallrye.reactive.messaging.kafka.api.OutgoingKafkaRecordMetadata;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -7,16 +8,12 @@ import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Message;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Optional;
 
 @ApplicationScoped
 public class LegalEntityProcessor {
-
-    public static final Logger logger = LoggerFactory.getLogger(LegalEntityProcessor.class);
 
     private final String targetSystemId;
     private final LegalEntityLookupService legalEntityLookupService;
@@ -36,7 +33,7 @@ public class LegalEntityProcessor {
 
     @Incoming("legal-entity-in")
     public void process(ConsumerRecord<String, LegalEntitySource> source) {
-        logger.info("Start Processing: {}, {}", source.key(), source.value());
+        Log.infov("Start Processing: {0}, {1}", source.key(), source.value());
         LegalEntitySource legalEntitySource = source.value();
         Optional<Integer> legalEntityId = legalEntityLookupService.findLegalEntityId(legalEntitySource.globalLegalEntityId(), targetSystemId);
         if (legalEntityId.isPresent()) {
